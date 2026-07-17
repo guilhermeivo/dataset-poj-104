@@ -1,0 +1,33 @@
+name: Metrics Dataset
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  EXTENSIONS: c h cpp hpp
+
+jobs:
+  metric:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y cloc
+
+      - name: Running dataset metrics on codexglue
+        run: |
+          set -e
+
+          echo "## Source Code Metrics (`codexglue`)" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          extensions=$(echo "$EXTENSIONS" | tr ' ' ',')
+
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+
+          cloc codexglue --include-ext="$extensions" >> "$GITHUB_STEP_SUMMARY"
+
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
