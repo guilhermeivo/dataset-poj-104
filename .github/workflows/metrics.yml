@@ -21,7 +21,7 @@ jobs:
         run: |
           set -e
 
-          echo "## Source Code Metrics (`codexglue`)" >> "$GITHUB_STEP_SUMMARY"
+          echo '## Source Code Metrics (`codexglue`)' >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
 
           extensions=$(echo "$EXTENSIONS" | tr ' ' ',')
@@ -29,5 +29,16 @@ jobs:
           echo '```text' >> "$GITHUB_STEP_SUMMARY"
 
           cloc codexglue --include-ext="$extensions" >> "$GITHUB_STEP_SUMMARY"
+
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+          echo '## Source Code Metrics (`codexglue__test`)' >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+
+          extensions=$(echo "$EXTENSIONS" | tr ' ' ',')
+
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+
+          cloc codexglue__test --include-ext="$extensions" >> "$GITHUB_STEP_SUMMARY"
 
           echo '```' >> "$GITHUB_STEP_SUMMARY"
