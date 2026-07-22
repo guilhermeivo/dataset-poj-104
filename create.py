@@ -54,4 +54,31 @@ for label in labels:
 assert len(codes) == count, \
     "duplicate code files"
 
+# test set
+
+codes = set()
+
+for test in ds["test"]:
+    codes.add(CodeDict(
+        test["id"], test["code"], test["label"]
+    ))
+
+labels = set()
+
+for code in codes:
+    labels.add(code.label)
+
+codes_sorted = sorted(
+    codes,
+    key = lambda x: (x.id, x.code, x.label)
+)
+
+for index, item in enumerate(codes_sorted):
+    workdir = Path("codexglue__test") / Path(item.label)
+    workdir.mkdir(parents=True, exist_ok=True)
+    code = item.code.replace("\r\n", "\n").replace("\r", "\n")
+
+    with open(workdir / f"{str(index)}.cpp", "w", encoding="utf-8", newline="\n") as f:
+        f.write(code)
+
 sys.exit(0)
